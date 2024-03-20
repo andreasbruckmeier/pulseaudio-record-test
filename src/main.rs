@@ -103,13 +103,20 @@ fn main() {
         None,              // default server
         "MyPulseClient",   // application’s name
         Direction::Record, // record from pa server
-        None,              // default device
+        Some("alsa_input.usb-Solid_State_System_Co._Ltd._MMX_150-00.mono-fallback"),              // default device
         "Music",           // stream description
         &spec,             // ample format
         None,              // default channel map
         None,              // default buffering attributes
-    )
-    .unwrap();
+    );
+
+    let s = match s {
+        Ok(s) => s,
+        Err(e) => {
+            println!("{:#?}", e);
+            return;
+        }
+    };
 
     let mut data: Vec<Sample> = Vec::with_capacity(SAMPLING as usize * DATA_INITIAL);
     let mut buffer: [u8; BUFFER_SIZE] = [0; BUFFER_SIZE];
